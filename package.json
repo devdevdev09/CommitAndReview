@@ -1,0 +1,19 @@
+{
+  "name": "commitandreview",
+  "version": "1.0.0",
+  "description": "#### 프로그램 요약 - Ver.1     - N명의 그룹에서 각자 M명의 리뷰어를 매칭하는 프로그램.     - 리뷰어 수만큼 각자 M명의 리뷰를 담당해야 함.         - ex). 10명의 그룹에서 각자 2명의 코드리뷰를 담당하고 2명으로 부터 리뷰를 받는다.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/devdevdev09/CommitAndReview.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/devdevdev09/CommitAndReview/issues"
+  },
+  "homepage": "https://github.com/devdevdev09/CommitAndReview#readme"
+}
