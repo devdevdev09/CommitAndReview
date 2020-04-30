@@ -1,4 +1,8 @@
 const jparser = require("./json-parser");
+const fs = require("fs");
+
+const fileName = "data.json";
+const fileExt = "utf8";
 
 // 멤버 리스트를 가져온다.
 const getMemberList = function(){
@@ -29,15 +33,81 @@ const checkLastWeek = function(member){
         // 1회차 이상일 경우
     }
 
-    for(i in data){
-        console.log(data[0].DATA[i]);
-    }
+    data.push(setJsonData(
+    {
+        NO : "1",
+        WEEK : "2",
+        DATE : "2020-04-27"
+    }));
+
+    fileWrite(JSON.stringify(data));
 }
 
 // 개인이 커밋확인할 사람 매칭
 const setCommitMember = function(list){
     
 };
+
+const setJsonData = function(data){
+    const json = {
+        NO : data.NO,
+        WEEK : data.WEEK,
+        DATE : data.DATE,
+    }
+
+    // TODO::유저 데이터 설정하기
+    const users = [
+            {
+                "USER_ID" : "1",
+                "COMMITS" : [
+                    {
+                        "NO" : "1",
+                        "USER_ID" : "2"
+                    },
+                    {
+                        "NO" : "2",
+                        "USER_ID" : "3"
+                    }
+                ]
+            },
+            {
+                "USER_ID" : "2",
+                "COMMITS" : [
+                    {
+                        "NO" : "1",
+                        "USER_ID" : "1"
+                    },
+                    {
+                        "NO" : "2",
+                        "USER_ID" : "3"
+                    }
+                ]
+            },
+            {
+                "USER_ID" : "3",
+                "COMMITS" : [
+                    {
+                        "NO" : "1",
+                        "USER_ID" : "2"
+                    },
+                    {
+                        "NO" : "2",
+                        "USER_ID" : "1"
+                    }
+                ]
+            }
+        ];
+
+    json.DATA = users;
+
+    return json;
+
+}
+
+// file update
+const fileWrite = function(data){
+    fs.writeFileSync(fileName, data, fileExt);
+}
 
 const init = function(){
     const members = getMemberList();
