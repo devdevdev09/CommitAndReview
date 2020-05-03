@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/devdevdev09/CommitAndReview/issues"
   },
-  "homepage": "https://github.com/devdevdev09/CommitAndReview#readme"
+  "homepage": "https://github.com/devdevdev09/CommitAndReview#readme",
+  "dependencies": {
+    "moment": "^2.25.1"
+  }
 }

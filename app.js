@@ -1,4 +1,5 @@
 const jparser = require("./json-parser");
+const moment  = require("moment");
 const fs = require("fs");
 
 const fileName = "data.json";
@@ -20,27 +21,57 @@ const getJsonParse = function(fileName){
     return data;
 }
 
+const getToday = function(){
+    const today = moment().format("YYYY-MM-DD");
+    return today;
+}
+
+const addDate = function(add, _date){
+    const last = moment(_date);
+    const date = last.add(add,'days').format("YYYY-MM-DD");
+    return date;
+}
+
 // 이전에 매칭이 되었는지 체크
 const checkLastWeek = function(member){
-    const data = getJsonParse("data.json");
+    const datas = getJsonParse("data.json");
 
-    const lastWeek = data.length;
-    const currentNo = data[lastWeek - 1].WEEK;
+    const len = datas.length;
+    const currentLen = len - 1;
+    const currentWeek = datas[currentLen].WEEK;
+    const currentNo = datas[currentLen].NO;
+    const currentDate = datas[currentLen].DATE;
+    const checkDate = addDate(7, currentDate);
+    const lastWeekMembers = [];
 
-    if(currentNo == 1){
-        // 1회차 일경우
+    if(checkDate == getToday()){
+        console.log("기록할날");
     }else{
-        // 1회차 이상일 경우
+        console.log("기록 안해도 됨");
     }
 
-    data.push(setJsonData(
-    {
-        NO : "1",
-        WEEK : "2",
-        DATE : "2020-04-27"
-    }));
+    for(index in datas){
+        // 이번주만 체크
+        if(datas[index].NO == currentNo){
+            if(currentWeek == 1){
+                // 1회차 일경우
+            }else{
+                // 1회차 이상일 경우
+                for(i in datas){
+                    
+                }
+            }    
+        }
+    }
+    // 
+    // data.push(setJsonData(
+    // {
+    //     NO : "1",
+    //     WEEK : "2",
+    //     DATE : "2020-04-27"
+    // }));
 
-    fileWrite(JSON.stringify(data));
+    // fileWrite(JSON.stringify(data));
 }
 
 // 개인이 커밋확인할 사람 매칭
@@ -101,7 +132,6 @@ const setJsonData = function(data){
     json.DATA = users;
 
     return json;
-
 }
 
 // file update
@@ -112,13 +142,15 @@ const fileWrite = function(data){
 const init = function(){
     const members = getMemberList();
 
-    for(index in members){
-        console.log(members[index].USER_ID);
-    }
+    // for(index in members){
+    //     console.log(members[index].USER_ID);
+    // }
 
     checkLastWeek();
 };
 
 init();
+
+//멤버별 멤버 리스트 => 멤버배열
 
 
