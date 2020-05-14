@@ -184,6 +184,23 @@ const addExceptList = function(list, exept){
     
 }
 
+// 오늘이 마지막 데이터의 날짜보다 7일이상 지났는지 체크
+const checkMatchDate = function(){
+    const datas = getDataList();
+
+    const len = datas.length;
+    const currentLen = len - 1;
+    const currentWeek = datas[currentLen].WEEK;
+    const currentNo = datas[currentLen].NO;
+    const currentDate = datas[currentLen].DATE;
+    const checkDate = addDate(7, currentDate);
+    const today = getToday();
+
+    const result = checkDate <= today;
+
+    return result;
+}
+
 const init = function(){
     const memberList = getMemberList();
 
@@ -236,8 +253,10 @@ const init = function(){
     
 };
 
-init();
+// init();
 
+
+console.log(checkMatchDate());
 
 
 
