@@ -12,6 +12,12 @@ const getMemberList = function(){
     return members;
 };
 
+const getDataList = function(){
+    const datas = getJsonParse("data.json");
+
+    return datas;
+}
+
 // json 파일 파싱
 const getJsonParse = function(fileName){
     const fileExt = "UTF8";
@@ -34,7 +40,7 @@ const addDate = function(add, _date){
 
 // 이전에 매칭이 되었는지 체크
 const checkLastWeek = function(member){
-    const datas = getJsonParse("data.json");
+    const datas = getDataList();
 
     const len = datas.length;
     const currentLen = len - 1;
@@ -139,18 +145,100 @@ const fileWrite = function(data){
     fs.writeFileSync(fileName, data, fileExt);
 }
 
+
+const REVIEW_COUNT_PER_USER = 2;
+
+const getReviewObj = function(user){
+    const obj = {
+        "USER" : user,
+        "REVIEW_COUNT" : REVIEW_COUNT_PER_USER
+    }
+
+    return obj;
+}
+
+const getRandomInt = function(max = 10, min = 1){
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+const initReviewList = function(memberList){
+    const reviewList = [];
+
+    for(index in memberList){
+        reviewList.push(getReviewObj(memberList[index].USER_ID));
+    }
+
+    return reviewList;
+}
+
+const removeExceptList = function(reviewList, memberList, index){
+    const list = reviewList.splice(index, 1);
+    const result = {
+        "REVIEW_LIST" : list,
+        "EXCEPT_LIST" : memberList[index]
+    }
+    return result;
+}
+
+const addExceptList = function(list, exept){
+    
+}
+
 const init = function(){
-    const members = getMemberList();
+    const memberList = getMemberList();
 
-    // for(index in members){
-    //     console.log(members[index].USER_ID);
-    // }
-
-    checkLastWeek();
+    let memberCount = memberList.length;
+    let reviewList = initReviewList(memberList);
+    const exReviewList = [];
+    
+    const dataList = [];
+    
+    for(index in memberList){
+        const match_users = [];
+        let reviewData = {
+            "USER_ID" : memberList[index].USER_ID
+        };
+    
+        let reviews = [];
+        for(let i = 0 ; i < REVIEW_COUNT_PER_USER; i++){
+            let data = {};
+            data.NO = i+1;
+            let random = getRandomInt(memberCount,1);
+    
+            reviewList[random - 1].REVIEW_COUNT -= 1;
+            match_users.push(reviewList[random - 1]);
+            
+            data.USER_ID = reviewList[random - 1].USER;
+        
+            reviewList.splice(random - 1, 1);
+            memberCount -= 1;
+            reviews.push(data);
+        }
+    
+        reviewData.REVIEWS = reviews;
+        
+        dataList.push(reviewData);
+    
+        for(index in match_users){
+            memberCount += 1;
+            if(match_users[index].REVIEW_COUNT == 0){
+                match_users.splice(index,1);
+                memberCount -= 1;
+            }
+        }
+    
+        reviewList.push.apply(reviewList, match_users);
+    }
+    
+    for(i in dataList){
+        console.log(dataList[i]);
+    }
+    
 };
 
 init();
 
-//멤버별 멤버 리스트 => 멤버배열
+
+
 
 
